@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editer Profil | UnivMarket</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .input-focus:focus { border-color: #6366f1; ring: 4px; ring-color: rgba(99, 102, 241, 0.1); }
+        .btn-loading { pointer-events: none; opacity: 0.7; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-900">
+
+    <nav class="bg-white/80 border-b border-slate-200 px-4 py-4 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-2xl mx-auto flex items-center justify-between">
+            <button onclick="location.href='profile.html'" class="p-2 hover:bg-slate-100 rounded-xl transition-all">
+                <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+            </button>
+            <h1 class="text-sm font-extrabold uppercase tracking-widest text-slate-400 text-center flex-1">Paramètres du profil</h1>
+            <div class="w-10"></div> </div>
+    </nav>
+
+    <main class="max-w-2xl mx-auto px-4 py-10">
+        
+        <form id="edit-profile-form" class="space-y-8">
+            <div class="flex flex-col items-center gap-4 group">
+                <div class="relative">
+                    <img id="preview-img" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" 
+                         class="w-32 h-32 rounded-[2.5rem] border-4 border-white shadow-2xl object-cover bg-slate-100">
+                    <label for="profile-upload" class="absolute bottom-1 right-1 p-2.5 bg-indigo-600 text-white rounded-2xl shadow-lg border-2 border-white cursor-pointer hover:scale-110 transition-transform active:scale-95">
+                        <i data-lucide="camera" class="w-4 h-4"></i>
+                        <input type="file" id="profile-upload" accept="image/*" class="hidden">
+                    </label>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cliquez pour changer la photo</p>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm space-y-6">
+                
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-400 uppercase ml-1">Nom complet</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                        <input type="text" id="display-name" required placeholder="Ex: Jean Dupont" 
+                               class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-400 uppercase ml-1">Numéro WhatsApp</label>
+                    <div class="relative">
+                        <i data-lucide="phone" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                        <input type="tel" id="whatsapp" required placeholder="22997000000" 
+                               class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
+                    </div>
+                    <p class="text-[10px] text-slate-400 ml-1 italic">Indiquez votre numéro sans le signe "+" pour le lien WhatsApp.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-400 uppercase ml-1">Université / Campus</label>
+                    <div class="relative">
+                        <i data-lucide="graduation-cap" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                        <select id="university" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all appearance-none">
+                            <optgroup label="Universités Nationales">
+                            <option value="UAC">UAC (Abomey-Calavi)</option>
+                            <option value="UP">UP (Porto-Novo)</option>
+                            <option value="UNSTIM">UNSTIM (Abomey)</option>
+                            <option value="UPARAKOU">Université de Parakou</option>
+                        </optgroup>
+                        <optgroup label="Grandes Écoles & Instituts">
+                            <option value="ENEAM">ENEAM</option>
+                            <option value="EPAC">EPAC</option>
+                            <option value="ENAM">ENAM</option>
+                            <option value="IFRI">IFRI</option>
+                            <option value="EGM">École de Génie Militaire</option>
+                            <option value="IUT">IUT (Lokossa)</option>
+                        </optgroup>
+                        <optgroup label="Écoles Privées">
+                            <option value="ESM">ESM-Benin</option>
+                            <option value="Pigier">Pigier Bénin</option>
+                            <option value="UATM">UATM (Gasa Formation)</option>
+                            <option value="ISM">ISM Adonai</option>
+                            <option value="IUA">IUA</option>
+                        </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button type="submit" id="save-btn" class="w-full bg-indigo-600 text-white py-4 rounded-[2rem] font-bold shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <span id="btn-text">Enregistrer les modifications</span>
+                    <i data-lucide="save" class="w-5 h-5"></i>
+                </button>
+                <button type="button" onclick="location.href='profile.html'" class="w-full text-slate-400 py-2 font-bold text-sm hover:text-slate-600 transition-colors">Annuler</button>
+            </div>
+        </form>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJfyELCr3EBjHydo2JSL2akShecqcx0yA",
+            authDomain: "unimarket-d6259.firebaseapp.com",
+            projectId: "unimarket-d6259",
+            storageBucket: "unimarket-d6259.firebasestorage.app",
+            messagingSenderId: "236655322274",
+            appId: "1:236655322274:web:c91d9c59dba3d8d22d63fb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        lucide.createIcons();
+
+        const form = document.getElementById('edit-profile-form');
+        const fileInput = document.getElementById('profile-upload');
+        const previewImg = document.getElementById('preview-img');
+        const saveBtn = document.getElementById('save-btn');
+        let selectedFile = null;
+
+        // Pré-remplissage des données
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('display-name').value = user.displayName || "";
+                if (user.photoURL) previewImg.src = user.photoURL;
+
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('whatsapp').value = data.phone || data.whatsapp || "";
+                    document.getElementById('university').value = data.university || "UAC - Abomey-Calavi";
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Gestion de la prévisualisation photo
+        fileInput.onchange = (e) => {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = (e) => previewImg.src = e.target.result;
+                reader.readAsDataURL(selectedFile);
+            }
+        };
+
+        // Soumission du formulaire
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
+
+            setLoading(true);
+
+            try {
+                let photoURL = user.photoURL;
+
+                // 1. Upload de la photo si changée
+                if (selectedFile) {
+                    const storageRef = ref(storage, `profiles/${user.uid}`);
+                    await uploadBytes(storageRef, selectedFile);
+                    photoURL = await getDownloadURL(storageRef);
+                }
+
+                // 2. Mise à jour de Firebase Auth
+                await updateProfile(user, {
+                    displayName: document.getElementById('display-name').value,
+                    photoURL: photoURL
+                });
+
+                // 3. Mise à jour de Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    displayName: document.getElementById('display-name').value,
+                    phone: document.getElementById('whatsapp').value,
+                    university: document.getElementById('university').value,
+                    updatedAt: new Date(),
+                    photoURL: photoURL
+                }, { merge: true });
+
+                alert("✅ Profil mis à jour avec succès !");
+                window.location.href = 'profile.html';
+
+            } catch (error) {
+                console.error(error);
+                alert("❌ Erreur : " + error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        function setLoading(isLoading) {
+            if (isLoading) {
+                saveBtn.classList.add('btn-loading');
+                document.getElementById('btn-text').textContent = "Synchronisation en cours...";
+            } else {
+                saveBtn.classList.remove('btn-loading');
+                document.getElementById('btn-text').textContent = "Enregistrer les modifications";
+            }
+        }
+    </script>
+</body>
+</html>

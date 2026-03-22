@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messagerie | UnivMarket</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh; overflow: hidden; }
+        .chat-container { height: calc(100vh - 64px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Animation de bulle */
+        .message-bubble { 
+            max-width: 80%; 
+            animation: fadeIn 0.2s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* État mobile : Masquer la sidebar quand le chat est ouvert */
+        @media (max-width: 768px) {
+            .sidebar-hidden { display: none; }
+            .window-active { display: flex !important; }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <nav class="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-4 z-50 relative">
+        <div class="flex items-center gap-3">
+            <button onclick="location.href='index.html'" class="p-2 hover:bg-slate-50 rounded-full transition-colors">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-slate-600"></i>
+            </button>
+            <h1 class="text-xl font-extrabold text-indigo-600 tracking-tight">Messages</h1>
+        </div>
+        <div id="user-status" class="flex items-center gap-3">
+            <span id="user-display-name" class="hidden sm:block text-sm font-medium text-slate-500">Chargement...</span>
+            <div class="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 overflow-hidden">
+                <img id="user-avatar" src="assets/images/default-avatar.png" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex chat-container overflow-hidden">
+        
+        <aside id="chat-sidebar" class="w-full md:w-80 lg:w-96 bg-white border-r border-slate-100 flex flex-col shrink-0">
+            <div class="p-4">
+                <div class="relative group">
+                    <input type="text" placeholder="Rechercher une conversation..." 
+                           class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-11 pr-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none">
+                    <i data-lucide="search" class="absolute left-4 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500"></i>
+                </div>
+            </div>
+
+            <div id="conversations-list" class="flex-1 overflow-y-auto no-scrollbar pb-20">
+                <div class="flex flex-col items-center justify-center h-40 text-slate-300 opacity-60">
+                    <i data-lucide="loader-2" class="w-8 h-8 animate-spin mb-2"></i>
+                    <p class="text-xs">Chargement des messages...</p>
+                </div>
+            </div>
+        </aside>
+
+        <section id="chat-window" class="hidden md:flex flex-1 flex-col bg-slate-50 relative">
+            
+            <header class="h-16 bg-white/90 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-6 shrink-0 z-10">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="md:hidden p-2 -ml-2 text-slate-400">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                    <div class="relative">
+                        <img id="active-chat-img" src="assets/images/default-avatar.png" class="w-10 h-10 rounded-full object-cover shadow-sm border border-white">
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                    </div>
+                    <div>
+                        <h2 id="active-chat-name" class="font-bold text-slate-800 leading-none mb-1">Sélectionnez un contact</h2>
+                        <p id="active-chat-status" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">En ligne</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"><i data-lucide="phone" class="w-5 h-5"></i></button>
+                    <button class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"><i data-lucide="more-vertical" class="w-5 h-5"></i></button>
+                </div>
+            </header>
+
+            <div id="messages-container" class="flex-1 overflow-y-auto p-4 md:p-6 flex flex-col gap-4 no-scrollbar">
+                <div class="m-auto text-center max-w-xs opacity-40">
+                    <div class="w-20 h-20 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="message-circle" class="w-10 h-10 text-slate-400"></i>
+                    </div>
+                    <p class="text-sm font-medium">Commencez à discuter avec un étudiant pour conclure une vente.</p>
+                </div>
+            </div>
+
+            <footer class="p-4 bg-white border-t border-slate-100">
+                <form id="chat-form" class="flex items-center gap-2 md:gap-4 max-w-5xl mx-auto">
+                    <button type="button" class="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all">
+                        <i data-lucide="paperclip" class="w-6 h-6"></i>
+                    </button>
+                    <div class="flex-1 relative">
+                        <input type="text" id="message-input" autocomplete="off" placeholder="Écrivez votre message..." 
+                               class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-5 focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-sm md:text-base">
+                        <div id="typing-indicator" class="absolute -top-6 left-2 text-[10px] text-indigo-500 font-bold italic hidden">
+                            L'étudiant écrit...
+                        </div>
+                    </div>
+                    <button type="submit" id="send-btn" class="bg-indigo-600 text-white p-3.5 rounded-2xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95">
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                    </button>
+                </form>
+            </footer>
+        </section>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Fonction pour basculer la vue sur mobile
+        function toggleSidebar() {
+            document.getElementById('chat-sidebar').classList.toggle('sidebar-hidden');
+            document.getElementById('chat-window').classList.toggle('window-active');
+        }
+    </script>
+    <script type="module" src="js/chat.js"></script>
+</body>
+</html>

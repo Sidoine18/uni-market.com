@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendre sur UnivMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 pb-20">
+
+    <nav class="bg-white/80 border-b border-slate-200 px-4 py-4 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-3xl mx-auto flex items-center justify-between">
+            <button onclick="location.href='index.html'" class="p-2.5 hover:bg-slate-100 rounded-2xl transition-all">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-slate-600"></i>
+            </button>
+            <h1 class="text-xl font-black tracking-tight text-slate-800">Poster une annonce</h1>
+            <div class="w-10"></div> 
+        </div>
+    </nav>
+
+    <main class="max-w-2xl mx-auto px-4 mt-8">
+        <form id="add-product-form" class="space-y-8">
+            
+            <section class="space-y-3">
+                <label class="block text-sm font-bold text-slate-700 ml-1">Photo du produit</label>
+                <div id="drop-zone" class="relative group border-2 border-dashed border-slate-200 rounded-[2.5rem] p-4 text-center hover:border-indigo-400 transition-all cursor-pointer bg-white overflow-hidden min-h-[250px] flex items-center justify-center">
+                    <input type="file" id="product-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" required>
+                    <div id="upload-placeholder">
+                        <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-indigo-500">
+                            <i data-lucide="camera" class="w-8 h-8"></i>
+                        </div>
+                        <p class="text-sm font-bold text-slate-600">Clique pour ajouter une photo</p>
+                    </div>
+                    <img id="image-preview" class="hidden absolute inset-0 w-full h-full object-cover rounded-[2rem]">
+                    <button type="button" id="remove-img" class="hidden absolute top-4 right-4 z-20 bg-red-500 text-white p-2 rounded-xl shadow-lg">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2 ml-1">Titre de l'annonce</label>
+                    <input type="text" id="product-name" placeholder="Ex: iPhone 12 Pro 128Go" 
+                           class="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-medium" required>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2 ml-1">Prix (FCFA)</label>
+                        <input type="number" id="product-price" placeholder="Prix ferme" 
+                               class="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-bold text-indigo-600" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2 ml-1">Catégorie</label>
+                        <select id="product-category" class="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-medium" required>
+                            <option value="">Sélectionner...</option>
+                            <option value="Informatique">Informatique</option>
+                            <option value="Livres">Livres & Cours</option>
+                            <option value="Logement">Logement</option>
+                            <option value="Mode">Mode & Beauté</option>
+                            <option value="Services">Services / Jobs</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2 ml-1">Ton Numéro WhatsApp</label>
+                    <div class="relative">
+                        <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-400">+229</span>
+                        <input type="tel" id="seller-phone" placeholder="Numéro à 8 chiffres" maxlength="8"
+                               class="w-full pl-16 pr-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-bold text-slate-700" required>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-2 ml-1 italic text-indigo-500 font-bold uppercase tracking-wider">Ce numéro sera utilisé pour te contacter</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2 ml-1">Lieu (Université)</label>
+                    <select id="product-university" class="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-medium" required>
+                        <optgroup label="Universités Nationales">
+                            <option value="UAC">UAC (Abomey-Calavi)</option>
+                            <option value="UP">UP (Porto-Novo)</option>
+                            <option value="UNSTIM">UNSTIM (Abomey)</option>
+                            <option value="UPARAKOU">Université de Parakou</option>
+                        </optgroup>
+                        <optgroup label="Grandes Écoles & Instituts">
+                            <option value="ENEAM">ENEAM</option>
+                            <option value="EPAC">EPAC</option>
+                            <option value="ENAM">ENAM</option>
+                            <option value="IFRI">IFRI</option>
+                            <option value="EGM">École de Génie Militaire</option>
+                            <option value="IUT">IUT (Lokossa)</option>
+                        </optgroup>
+                        <optgroup label="Écoles Privées">
+                            <option value="ESM">ESM-Benin</option>
+                            <option value="Pigier">Pigier Bénin</option>
+                            <option value="UATM">UATM (Gasa Formation)</option>
+                            <option value="ISM">ISM Adonai</option>
+                            <option value="IUA">IUA</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2 ml-1">Détails</label>
+                    <textarea id="product-desc" rows="4" placeholder="État du produit..." 
+                              class="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-medium" required></textarea>
+                </div>
+            </section>
+
+            <button type="submit" id="submit-btn" class="w-full bg-slate-900 text-white py-5 rounded-[2rem] font-black text-lg hover:bg-indigo-600 transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3">
+                <i data-lucide="send" class="w-6 h-6"></i>
+                Publier l'annonce
+            </button>
+        </form>
+    </main>
+
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex-col items-center justify-center z-[100] hidden">
+        <div class="w-20 h-20 border-8 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="mt-6 font-black text-white text-xl tracking-tight uppercase">Mise en ligne...</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJfyELCr3EBjHydo2JSL2akShecqcx0yA",
+            authDomain: "unimarket-d6259.firebaseapp.com",
+            projectId: "unimarket-d6259",
+            storageBucket: "unimarket-d6259.firebasestorage.app",
+            messagingSenderId: "236655322274",
+            appId: "1:236655322274:web:c91d9c59dba3d8d22d63fb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        lucide.createIcons();
+
+        const form = document.getElementById('add-product-form');
+        const imgInput = document.getElementById('product-image');
+        const imgPreview = document.getElementById('image-preview');
+        const placeholder = document.getElementById('upload-placeholder');
+        const removeImgBtn = document.getElementById('remove-img');
+        const overlay = document.getElementById('loading-overlay');
+        const phoneInput = document.getElementById('seller-phone');
+
+        let currentUser = null;
+
+        const CLOUD_NAME = "dudlp4vob";
+        const UPLOAD_PRESET = "UniMarket";
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) window.location.href = 'login.html';
+            currentUser = user;
+
+            // Tentative de récupération auto du numéro depuis le profil utilisateur
+            const userSnap = await getDoc(doc(db, "users", user.uid));
+            if(userSnap.exists() && userSnap.data().phone) {
+                phoneInput.value = userSnap.data().phone.replace('229', '');
+            }
+        });
+
+        imgInput.onchange = e => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imgPreview.src = reader.result;
+                    imgPreview.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    removeImgBtn.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        removeImgBtn.onclick = () => {
+            imgInput.value = "";
+            imgPreview.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+            removeImgBtn.classList.add('hidden');
+        };
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const file = imgInput.files[0];
+            const rawPhone = phoneInput.value.trim();
+            
+            // Validation numéro Bénin
+            if(rawPhone.length !== 10) return alert("Le numéro doit contenir 10 chiffres.");
+            const fullPhone = "229" + rawPhone;
+
+            overlay.style.display = 'flex';
+
+            try {
+                // 1. Cloudinary
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', UPLOAD_PRESET);
+                const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: formData });
+                const cloudData = await cloudRes.json();
+
+                // 2. Firestore avec le numéro INCLUS dans l'annonce
+                await addDoc(collection(db, "products"), {
+                    title: document.getElementById('product-name').value.trim(),
+                    price: parseFloat(document.getElementById('product-price').value),
+                    category: document.getElementById('product-category').value,
+                    university: document.getElementById('product-university').value,
+                    description: document.getElementById('product-desc').value.trim(),
+                    imageUrl: cloudData.secure_url,
+                    sellerId: currentUser.uid,
+                    sellerName: currentUser.displayName || "Étudiant",
+                    sellerPhone: fullPhone, // Sauvegarde directe du numéro
+                    createdAt: serverTimestamp(),
+                    status: "active"
+                });
+
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                console.error(error);
+                alert("Erreur lors de la publication.");
+                overlay.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
